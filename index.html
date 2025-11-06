@@ -10,7 +10,7 @@
   <main class="container">
     <h1>Lista de Tarefas</h1>
 
-    <!-- FORMULÁRIO: CREATE -->
+    <!-- CREATE -->
     <form id="task-form" autocomplete="off">
       <input
         id="task-input"
@@ -22,7 +22,7 @@
     </form>
 
     <div class="toolbar">
-      <!-- FILTROS: READ POR STATUS -->
+      <!-- FILTROS -->
       <div class="filters">
         <button data-filter="all" class="active">Todas</button>
         <button data-filter="active">Pendentes</button>
@@ -35,7 +35,7 @@
           id="search"
           type="search"
           placeholder="Buscar..."
-          aria-label="Buscar tarefas pelo texto"
+          aria-label="Buscar tarefas"
         />
         <select id="sort" aria-label="Ordenar tarefas">
           <option value="created_desc">Mais novas</option>
@@ -45,7 +45,7 @@
         </select>
       </div>
 
-      <!-- RESUMO + LIMPAR CONCLUÍDAS -->
+      <!-- RESUMO / LIMPAR -->
       <div class="summary">
         <span id="counter">0 pendentes / 0 totais</span>
         <button
@@ -58,10 +58,10 @@
       </div>
     </div>
 
-    <!-- LISTA DE TAREFAS -->
+    <!-- LISTA -->
     <ul id="task-list"></ul>
 
-    <!-- DICA DE USO -->
+    <!-- DICA -->
     <footer class="hint">
       <small>
         Dica: dê <b>duplo clique</b> no título para editar.
@@ -73,3 +73,4 @@
   <script src="script.js"></script>
 </body>
 </html>
+
