@@ -1,76 +1,75 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="pt-BR">
-  <head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Lista de Tarefas</title>
-    <style>
-      * { box-sizing: border-box; }
-      body { font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif; margin: 0; background:#f6f7fb; }
-      .container { max-width: 680px; margin: 40px auto; background: #fff; padding: 24px; border-radius: 16px; box-shadow: 0 10px 20px rgba(0,0,0,.06); }
-      h1 { margin-top: 0; font-size: 1.4rem; }
-      form { display: flex; gap: 8px; margin-bottom: 16px; }
-      input { flex: 1; padding: 10px 12px; border: 1px solid #ddd; border-radius: 10px; }
-      button { padding: 10px 16px; border: 0; border-radius: 10px; background: #3b82f6; color: #fff; cursor: pointer; }
-      button:hover { opacity: .9; }
-      ul { list-style: none; padding: 0; margin: 0; }
-      li { display: flex; align-items: center; justify-content: space-between; padding: 10px 12px; border: 1px solid #eee; border-radius: 10px; margin-bottom: 8px; }
-      li.done { opacity: .7; text-decoration: line-through; }
-      li button { background: transparent; color:#ef4444; padding: 6px 8px; border: 1px solid #ef4444; }
-    </style>
-  </head>
-  <body>
-    <main class="container">
-      <h1>Lista de Tarefas</h1>
-      <form id="todo-form">
-        <input id="todo-input" type="text" placeholder="Digite uma tarefa..." required />
-        <button type="submit">Adicionar</button>
-      </form>
-      <ul id="todo-list"></ul>
-      <footer><p>Tarefa da semana 4</p></footer>
-    </main>
-    <script>
-      const form = document.getElementById('todo-form');
-      const input = document.getElementById('todo-input');
-      const list  = document.getElementById('todo-list');
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Lista de Tarefas</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <main class="container">
+    <h1>Lista de Tarefas</h1>
 
-      function addItem(item) {
-        const li = document.createElement('li');
-        li.innerHTML = '<span class="text"></span><span><button class="toggle">Concluir</button> <button class="remove">Excluir</button></span>';
-        li.querySelector('.text').textContent = item.text;
-        if (item.done) li.classList.add('done');
-        li.querySelector('.toggle').onclick = () => { li.classList.toggle('done'); save(); };
-        li.querySelector('.remove').onclick = () => { li.remove(); save(); };
-        list.appendChild(li);
-      }
+    <!-- FORMULÁRIO: CREATE -->
+    <form id="task-form" autocomplete="off">
+      <input
+        id="task-input"
+        type="text"
+        placeholder="Digite uma tarefa..."
+        required
+      />
+      <button type="submit">Adicionar</button>
+    </form>
 
-      function save() {
-        const items = [...document.querySelectorAll('#todo-list li')].map(li => ({
-          text: li.querySelector('.text').textContent,
-          done: li.classList.contains('done')
-        }));
-        localStorage.setItem('todos_singlefile', JSON.stringify(items));
-      }
+    <div class="toolbar">
+      <!-- FILTROS: READ POR STATUS -->
+      <div class="filters">
+        <button data-filter="all" class="active">Todas</button>
+        <button data-filter="active">Pendentes</button>
+        <button data-filter="done">Concluídas</button>
+      </div>
 
-      function load() {
-        try {
-          const data = JSON.parse(localStorage.getItem('todos_singlefile') || '[]');
-          data.forEach(addItem);
-        } catch(e) {
-          console.error('Erro ao carregar dados:', e);
-        }
-      }
+      <!-- BUSCA + ORDENAÇÃO -->
+      <div class="search-sort">
+        <input
+          id="search"
+          type="search"
+          placeholder="Buscar..."
+          aria-label="Buscar tarefas pelo texto"
+        />
+        <select id="sort" aria-label="Ordenar tarefas">
+          <option value="created_desc">Mais novas</option>
+          <option value="created_asc">Mais antigas</option>
+          <option value="az">A–Z</option>
+          <option value="status">Pendentes primeiro</option>
+        </select>
+      </div>
 
-      form.addEventListener('submit', (e) => {
-        e.preventDefault();
-        const text = input.value.trim();
-        if (!text) return;
-        addItem({ text, done: false });
-        input.value = '';
-        save();
-      });
+      <!-- RESUMO + LIMPAR CONCLUÍDAS -->
+      <div class="summary">
+        <span id="counter">0 pendentes / 0 totais</span>
+        <button
+          id="clear-done"
+          type="button"
+          title="Remover todas as tarefas concluídas"
+        >
+          Limpar concluídas
+        </button>
+      </div>
+    </div>
 
-      load();
-    </script>
-  </body>
+    <!-- LISTA DE TAREFAS -->
+    <ul id="task-list"></ul>
+
+    <!-- DICA DE USO -->
+    <footer class="hint">
+      <small>
+        Dica: dê <b>duplo clique</b> no título para editar.
+        <kbd>Enter</kbd> salva e <kbd>Esc</kbd> cancela.
+      </small>
+    </footer>
+  </main>
+
+  <script src="script.js"></script>
+</body>
 </html>
